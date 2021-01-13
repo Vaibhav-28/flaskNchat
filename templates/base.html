@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.10/dist/css/uikit.min.css" />
+    {% if title %}
+    <title>Chatriya - {{ title }}</title>
+    {% else %}
+    <title>Chatriya</title>
+    {% endif %}
+
+</head>
+<style>
+    body {
+        margin: 0;
+        padding-bottom: 100px;
+        box-sizing: border-box;
+        min-height: 100vh;
+        color: rgb(62, 72, 55);
+    }
+
+    a {
+        color: rgb(62, 72, 55);
+    }
+
+    a:hover {
+        color: #000000;
+        text-decoration: none;
+    }
+
+    .uk-icon-button {
+        color: rgb(62, 72, 55);
+    }
+
+    .uk-button-default {
+        color: rgb(62, 72, 55);
+
+    }
+
+    .uk-button-default:hover {
+        color: #333;
+        border-color: #6d6767;
+    }
+</style>
+
+<body class="uk-background-cover uk-flex uk-flex-center "
+    style="background-image:url({{url_for('static',filename='christmas.png')}});">
+    <a class=" uk-position-small uk-position-top-left  uk-text-bolder " href="#">About</a>
+    <a class=" uk-position-small uk-position-top-right uk-text-bolder " href="#">Contact</a>
+    {% block content %}
+    {% endblock %}
+    <div class="container uk-position-large uk-position-bottom-center">
+        <a href="" class="uk-icon-button  " uk-icon="github-alt"></a>
+        <a href="" class="uk-icon-button  uk-margin-small-left" uk-icon="linkedin"></a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.10/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.10/dist/js/uikit-icons.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="uk-container uk-align-center">
+    <h2 style="line-height: 4.3;">Welcome to the Room</h2>
+
+</div>
+<div class="uk-container uk-position-large uk-position-center" style="top:80%" ;>
+    <form>
+        <input class="uk-input uk-form-width-large" type="text" name="roomid"
+            style="background-color: rgb(182, 198, 199);">
+        <button class="uk-button uk-button-secondary" style="background-color: #3e4837;">Send</button>
+
+    </form>
+</div>
+<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+<script>
+    const socket = io.connect("http://127.0.0.1:5000");
+    socket.on('connect', function () {
+        socket.emit('join_room', {
+            username: "{{username}}",
+            room: "{{room}}"
+        })
+    })
+    socket.on('joinBroadcast', function (data) {
+        console.log(data)
+    })
+</script>
+{% endblock %}

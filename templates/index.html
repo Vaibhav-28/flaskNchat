@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="uk-container uk-position-center">
+    <form action="/room">
+        <fieldset class="uk-fieldset">
+            <legend class="uk-legend uk-text-center">Welcome</legend>
+
+            <div class="uk-margin">
+                <input class="uk-input" type="text" placeholder="username" name="username">
+            </div>
+            <div class="uk-margin">
+                <input class="uk-input" type="text" placeholder="room id" name="roomid">
+            </div>
+            <button class="uk-button uk-button-default uk-align-center">Submit</button>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
