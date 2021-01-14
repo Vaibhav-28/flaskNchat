@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container uk-position-center">
+    <form action="{{url_for('register')}}" , method="POST">
+        <fieldset class="uk-fieldset">
+
+            <legend class="uk-legend uk-text-center">Signup for Chatriya</legend>
+
+            <div class="uk-margin">
+                {{ form.username(class_='uk-input',placeholder='username',autocomplete='off',autofocus=true) }}
+                <ul>
+                    {% for error in form.username.errors %}
+                    <li class="uk-text-danger">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="uk-margin">
+                {{ form.password(class_='uk-input',placeholder='password') }}
+                <ul>
+                    {% for error in form.password.errors %}
+                    <li class="uk-text-danger">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="uk-margin">
+                {{ form.password2(class_='uk-input',placeholder='confirm password') }}
+                <ul>
+                    {% for error in form.password2.errors %}
+                    <li class="uk-text-danger">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {{ form.submit_btn(class="uk-button uk-button-secondary uk-align-center", style="background-color:
+            #464b43") }}
+        </fieldset>
+        {{ form.csrf_token }}
+    </form>
+</div>
+{% endblock %}
