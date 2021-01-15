@@ -26,7 +26,10 @@ def register():
     if reg_form.validate_on_submit():
         username = reg_form.username.data
         password = reg_form.password.data
-        user = User(username=username, password=password)
+
+        hashed_password = pbkdf2_sha256.hash(password)
+
+        user = User(username=username, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         return "Success!!"
