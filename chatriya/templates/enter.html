@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="uk-container uk-position-center">
+    <form action="/room">
+        <fieldset class="uk-fieldset">
+            <legend class="uk-legend uk-text-center uk-text-bolder">Enter room code:</legend>
+            <div class="uk-margin">
+                <input class="uk-input" type="text" placeholder="enter room code" name="room">
+            </div>
+            <button class="uk-button uk-button-secondary uk-align-center"
+                style="background-color: #3e4837">Submit</button>
+        </fieldset>
+    </form>
+    <hr class="uk-divider-icon">
+    <p class="uk-text-center uk-margin-remove-top"><a href="{{ url_for('create') }}" class="uk-label uk-align-center" style="background-color:#464b43;">Create New Room</a>
+    </p>
+</div>
+{% endblock %}

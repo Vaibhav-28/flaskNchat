@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from chatriya import db, login
+from . import db, login
 from flask_login import UserMixin
 
 @login.user_loader

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.10/dist/css/uikit.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap" rel="stylesheet"> 
     {% if title %}
     <title>Chatriya - {{ title }}</title>
     {% else %}
@@ -36,19 +38,38 @@
 
     .uk-button-default {
         color: rgb(62, 72, 55);
-
+        border-color:#917c6f;
     }
 
     .uk-button-default:hover {
-        color: #333;
-        border-color: #6d6767;
+        color: rgb(0, 0, 0);
+        border-color: #000000;
     }
+    
+    {% block style %}
+    {% endblock %}
+    
 </style>
 
 <body class="uk-background-cover uk-flex uk-flex-center "
     style="background-image:url({{url_for('static',filename='christmas.png')}});">
-    <a class=" uk-position-small uk-position-top-left  uk-text-bolder " href="#">ABOUT</a>
-    <a class=" uk-position-small uk-position-top-right uk-text-bolder " href="#">LOGIN</a>
+    <a class=" uk-position-small uk-position-top-left uk-button uk-button-default uk-button-small uk-text-bolder " href="{{ url_for('home') }}">HOME</a>
+    {% if current_user.is_authenticated %}
+    <a class=" uk-button uk-button-default uk-button-small uk-position-small uk-position-top-right uk-text-bolder " href="{{ url_for('logout') }}">LOGOUT</a>
+    {% else %}
+    <a class=" uk-button uk-button-default uk-button-small uk-position-small uk-position-top-right uk-text-bolder " href="{{ url_for('login') }}">LOGIN</a>
+    {% endif %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category,message in messages %}
+                <div class=" uk-alert-{{ category }}" style="position: absolute; padding-right:25%; margin-top:75px;" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p>{{ message }}</p>
+                </div>
+            
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     {% block content %}
     {% endblock %}
     <div class="container uk-position-large uk-position-bottom-center">

@@ -1,28 +1,147 @@
 {% extends "base.html" %}
+{% block style %}
+.msgcontainer{
+    font-family: 'Mouse Memoirs', sans-serif;
+    height:60vh;
+    overflow-y: scroll;
+}
+.msg {
+    margin:10px;
+    background-color: #f6f6f6;
+    width: 55%;
+    padding: 6px;
+    clear:both;
+    border: 0.5px solid #f2f2f2;;
+}
+.msg-center{
+    color: black;
+    display: block;
+    margin: auto;
+    padding:1px;
+    padding-left:10px;
+    background-color:#e3e3e3;
+    border-radius: 4px;
+    border: none;
+}
+.uk-label{
+    clear:both;
+}
+
+
+
+{% endblock %}
 {% block content %}
-<div class="uk-container uk-align-center">
-    <h2 style="line-height: 4.3;">Welcome to the Room</h2>
-
+<div class="uk-container uk-position-center">
+    <h3 class=" uk-text-center "><strong>Room Code : {{ room }}</strong></h3>
+    <div id="messages" class="uk-container msgcontainer">
+    </div>
+    <div class="uk-padding-small send-msg">
+        <form id="msgform">
+            <input id='msginput' class="uk-input uk-form-width-large" type="text" name="roomid" style="background-color: rgb(182, 198, 199);">
+            <button type="submit" id="sendbtn" class="uk-button uk-text-center uk-button-secondary" style="background-color: #3e4837;">Send</button>
+        </form>  
+    </div>
 </div>
-<div class="uk-container uk-position-large uk-position-center" style="top:80%" ;>
-    <form>
-        <input class="uk-input uk-form-width-large" type="text" name="roomid"
-            style="background-color: rgb(182, 198, 199);">
-        <button class="uk-button uk-button-secondary" style="background-color: #3e4837;">Send</button>
-
-    </form>
-</div>
+<span id="get-username" style="color:#b6c6c7;">{{ username }}</span>
 <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
-<!-- <script>
-    const socket = io.connect("http://127.0.0.1:5000");
-    socket.on('connect', function () {
-        socket.emit('join_room', {
-            username: "{{username}}",
-            room: "{{room}}"
+
+<script>
+    const username = document.querySelector('#get-username').innerHTML;
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+    socket.on('connect', function() {
+        socket.emit('join',{
+            username: "{{ username }}", 
+            room : "{{ room }}"
         })
+
+        var msginput = document.getElementById('msginput');
+        document.getElementById('msgform').onsubmit = function(e){
+            e.preventDefault();
+            var msg = msginput.value.trim(); 
+            if (msg.length){
+                socket.emit('message',{
+                    username: "{{ username }}",
+                    room : "{{ room }}",
+                    message : msg
+                })
+                msginput.value = '';
+                msginput.focus();
+            }
+        }
+
+    });
+
+    window.onbeforeunload = function () {
+        socket.emit('leave',{
+            username: "{{ username }}", 
+            room : "{{ room }}"
+        });
+    }
+
+    socket.on('disconnect', ()=>{
+        socket.emit('leave',{
+            username: "{{ username }}", 
+            room : "{{ room }}"
+        })
+    });
+
+    socket.on('joinBroad', function (data) {
+            if(username != data.username){
+            const  msgdiv = document.createElement('div');
+            msgdiv.innerHTML = `${data.username} has joined the chat`;
+            msgdiv.classList.add('msg');
+            msgdiv.classList.add('msg-center')
+            document.getElementById('messages').appendChild(msgdiv);
+        }
+    });
+    socket.on('leaveBroad', function (data) {
+        const  msgdiv = document.createElement('div');
+        msgdiv.innerHTML = `${data.username} has left the chat`;
+        msgdiv.classList.add('msg');
+        msgdiv.classList.add('msg-center')
+        document.getElementById('messages').appendChild(msgdiv);
+    
+    });
+
+    socket.on('sendMessage', function(data) {
+        var  msgdiv = document.createElement('div');
+        var  metadiv = document.createElement('div');
+        var  chatdiv = document.createElement('div');
+        if (username == data.username){
+            metadiv.innerHTML =`${data.time}<br>`;
+            metadiv.classList.add('uk-text-meta');
+            chatdiv.innerHTML = `You:&nbsp${data.message}`;
+            chatdiv.classList.add('uk-text-lead');
+            msgdiv.appendChild(metadiv);
+            msgdiv.appendChild(chatdiv);
+            msgdiv.classList.add('msg');
+            msgdiv.classList.add('uk-align-right');
+        }
+            
+        else {
+            metadiv.innerHTML =`${data.time}<br>`;
+            metadiv.classList.add('uk-text-meta');
+            chatdiv.innerHTML = `${data.username}:&nbsp${data.message}`;
+            chatdiv.classList.add('uk-text-lead');
+            msgdiv.appendChild(metadiv);
+            msgdiv.appendChild(chatdiv);
+            msgdiv.classList.add('msg');
+            msgdiv.classList.add('uk-align-left');
+        }
+        document.getElementById('messages').appendChild(msgdiv);
+        scrollDownChatWindow()
+
     })
-    socket.on('joinBroadcast', function (data) {
-        console.log(data)
-    })
-</script> -->
+
+    window.onbeforeunload = function () {
+        socket.emit('client_disconnecting', {'username':username});
+    }   
+
+    function scrollDownChatWindow() {
+        const chatWindow = document.querySelector("#messages");
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }  
+
+</script>
 {% endblock %}

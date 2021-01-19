@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="uk-container uk-position-center">
-    <form action="/room">
-        <fieldset class="uk-fieldset">
-            <legend class="uk-legend uk-text-center uk-text-bolder">Welcome</legend>
-            <div class="uk-margin">
-                <input class="uk-input" type="text" placeholder="enter room id" name="roomid">
-            </div>
-            <button class="uk-button uk-button-secondary uk-align-center"
-                style="background-color: #3e4837">Submit</button>
-        </fieldset>
-    </form>
+
+<div class="uk-container uk-position-large uk-position-center" >
+    <legend class="uk-legend uk-text-center uk-text-bolder">Welcome</legend>
+    <div class="uk-margin" >
+        <a href="{{ url_for('enter') }}" class="uk-button uk-button-secondary " style="background-color: #3e4837; padding: 0 20px;">Join Room</a> 
+        <a href="{{ url_for('create') }}" class="uk-button uk-button-secondary uk-margin-small-left" style="background-color:#3e4837; padding: 0 20px;">Create Room</a> 
+    </div>
 </div>
 {% endblock %}
