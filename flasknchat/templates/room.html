@@ -9,7 +9,7 @@
     margin:10px;
     background-color: #f6f6f6;
     width: 55%;
-    padding: 6px;
+    padding: 0px 6px;
     clear:both;
     border: 0.5px solid #f2f2f2;
     word-wrap:break-word;
@@ -112,6 +112,8 @@
             msgdiv.classList.add('msg');
             msgdiv.classList.add('msg-center')
             document.getElementById('messages').appendChild(msgdiv);
+            document.getElementById('messages').appendChild(msgdiv);
+            scrollDownChatWindow()
         }
     });
     socket.on('leaveBroad', function (data) {
@@ -120,6 +122,8 @@
         msgdiv.classList.add('msg');
         msgdiv.classList.add('msg-center')
         document.getElementById('messages').appendChild(msgdiv);
+        document.getElementById('messages').appendChild(msgdiv);
+        scrollDownChatWindow()
     
     });
 
@@ -130,7 +134,7 @@
         if (username == data.username){
             metadiv.innerHTML =`${data.time}<br>`;
             metadiv.classList.add('uk-text-meta');
-            chatdiv.innerHTML = `You:&nbsp${data.message}`;
+            chatdiv.innerHTML = `<div style="color:#d45500;">You:</div>${data.message}`;
             chatdiv.classList.add('uk-text-lead');
             msgdiv.appendChild(metadiv);
             msgdiv.appendChild(chatdiv);
@@ -141,7 +145,7 @@
         else {
             metadiv.innerHTML =`${data.time}<br>`;
             metadiv.classList.add('uk-text-meta');
-            chatdiv.innerHTML = `${data.username}:&nbsp${data.message}`;
+            chatdiv.innerHTML = `<div style="color:#d45500;">${data.username}:</div>${data.message}`;
             chatdiv.classList.add('uk-text-lead');
             msgdiv.appendChild(metadiv);
             msgdiv.appendChild(chatdiv);
